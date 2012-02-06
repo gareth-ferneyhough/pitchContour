@@ -2,6 +2,7 @@ all: proj
 
 clean:
 	rm *.o
+	rm pitchy
 
 pitch.o: pitch.h pitch.cpp
 	g++ -c pitch.cpp

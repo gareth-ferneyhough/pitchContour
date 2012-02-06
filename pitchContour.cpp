@@ -7,7 +7,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-JackClient::JackClient() : 
+JackClient::JackClient() :
   JackCpp::AudioIO("pitchContour", 1, 1)
 {
   start();
@@ -29,7 +29,7 @@ JackClient::JackClient() :
 
 JackClient::~JackClient()
 {
-  delete[] input_frames;
+  //  delete[] input_frames;
   delete[] downsampled_frames;
 
   close();
@@ -38,18 +38,23 @@ JackClient::~JackClient()
 int JackClient::audioCallback(jack_nframes_t nframes, audioBufVector inBufs, audioBufVector outBufs)
 {
   if (nframes == input_len){
-    input_frames = (float*)&inBufs[0];
-    processAudio();
+
+
+    //    input_frames = (float*)&inBufs[0];
+    //processAudio();
+    //    outBufs[0] = downsampled_frames;
+    memcpy(outBufs[0], inBufs[0], sizeof(float)*input_len);
   }
-  
+
   return 0;
 }
 
+/* Magic happenens here. */
 void JackClient::processAudio()
 {
   downSample();
-  float the_pitch = pitch->getPitch(downsampled_frames, downsampled_len);
-  cout << the_pitch << endl;
+  //  float the_pitch = pitch->getPitch(downsampled_frames, downsampled_len);
+  //  cout << the_pitch << endl;
 }
 
 void JackClient::downSample()
